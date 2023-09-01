@@ -14,7 +14,7 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
     
     -   Clone this repository into the `/media/m2/` directory on Clara AGX. You can use the following command:
         
-        bashCopy code
+
         
         `git clone [repository URL] /media/m2/` 
         
@@ -23,15 +23,14 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
     -   Navigate to the repository folder on Clara AGX.
     -   Build the Docker image by executing the `build_image.sh` script:
         
-        bashCopy code
+
         
         `./build_image.sh` 
         
 4.  **Run the Docker Image**
     
     -   Start the Docker container with the image you built by running the `run_image.sh` script:
-        
-        bashCopy code
+
         
         `./run_image.sh` 
         
