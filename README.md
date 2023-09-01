@@ -46,4 +46,5 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
 Explore the capabilities of this example to integrate speech recognition and image streaming. Feel free to adapt and extend this project to suit your specific needs.
 
 ## Questions
-Should you have any questions, please don't hesitate to contact Luohong.wu@balgrist.ch	
+
+If you have any questions or require further assistance, please do not hesitate to contact [Luohong.wu@balgrist.ch](mailto:Luohong.wu@balgrist.ch). We are here to help you make the most of this example application.
