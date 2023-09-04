@@ -16,6 +16,7 @@ class CentralPublishers(Node):
         self.Saw= self.create_publisher(Float32MultiArray, 'Saw', 10)
         self.Pelvis= self.create_publisher(Float32MultiArray, 'Pelvis', 10)
         self.Arthrex= self.create_publisher(Float32MultiArray, 'Arthrex', 10)
+        self.Clarius= self.create_publisher(Float32MultiArray, 'Clarius', 10)
 
 
 
@@ -51,6 +52,7 @@ def start_TCP_endpoint(IP,port):
 if __name__=='__main__':
     geometry_lists = ['geometry580.ini', # geometry file of HL2
                       'geometry980.ini', # geometry file of Pevlis model
+                      'geometry1280.ini', # geometry file of Pevlis model
                       ]
     geometry_lists=[os.path.join(os.getcwd(),"geometryFiles",geometryfile) for geometryfile in geometry_lists]
     spryTrack = SpryTrack(geometry_lists)

@@ -41,6 +41,7 @@ class SpryTrack:
             980:"Pelvis",
             2080:"Femur",
             1380:"Arthrex",
+            1280:"Clarius",
         }
         self.tracked_objects=[]
         self.poses={}
@@ -84,6 +85,8 @@ class SpryTrack:
                 publishers.Pelvis.publish(msg)
             elif device=='Arthrex':
                 publishers.Arthrex.publish(msg)
+            elif device=='Clarius':
+                publishers.Clarius.publish(msg)
 
 if __name__=='__main__':
     geometry_lists=['D:\spryTrack SDK x64\data\geometry580.ini',
