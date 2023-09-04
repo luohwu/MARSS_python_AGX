@@ -14,7 +14,7 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
     
     -   Clone this repository into the `/media/m2/` directory on Clara AGX. You can use the following command:
         
-
+        bashCopy code
         
         `git clone [repository URL] /media/m2/` 
         
@@ -23,14 +23,15 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
     -   Navigate to the repository folder on Clara AGX.
     -   Build the Docker image by executing the `build_image.sh` script:
         
-
+        bashCopy code
         
         `./build_image.sh` 
         
 4.  **Run the Docker Image**
     
     -   Start the Docker container with the image you built by running the `run_image.sh` script:
-
+        
+        bashCopy code
         
         `./run_image.sh` 
         
@@ -45,6 +46,17 @@ Follow these steps to set up and run the Speech Recognition and Image Streaming 
 
 Explore the capabilities of this example to integrate speech recognition and image streaming. Feel free to adapt and extend this project to suit your specific needs.
 
-## Questions
+# Speech to Text Demo
+There is a ready-to-use speech-to-text demo in the `speech_to_text_llm` folder. This demo will first convert `sample.wav` to text, and feed it to ChatGPT for analyzing. 
 
-If you have any questions or require further assistance, please do not hesitate to contact [Luohong.wu@balgrist.ch](mailto:Luohong.wu@balgrist.ch). We are here to help you make the most of this example application.
+1.  **Add your chat-GPT API in `stt_to_nlp.yaml`**
+    
+    -   Tutorial can be found [How to get ChatGPT API key | Elephas](https://elephas.app/blog/how-to-get-chatgpt-api-key-clh93ii2e1642073tpacu6w934j)
+2.  **Run the demo**
+		
+		`python stt_to_nlp.py`
+        
+
+
+## Questions
+Should you have any questions, please don't hesitate to contact Luohong.wu@balgrist.ch	
