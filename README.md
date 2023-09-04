@@ -5,8 +5,8 @@
 Welcome to the Speech Recognition and Image Streaming example application. This repository contains a demonstration of how to integrate speech recognition and image streaming using two fundamental components: a Unity client and a Python server. These components communicate through ROS2, utilizing the [Unity-Technologies/ROS-TCP-Connector](https://github.com/Unity-Technologies/ROS-TCP-Connector), a TCP-based communication framework. In this configuration, the Python server operates on Clara AGX, streaming images to HoloLens2 and transcribing speech from HoloLens2 to text. The transcribed text can then be analyzed using Chat-GPT. The Unity client, running on HoloLens2, can visualize images from Clara AGX and record and transmit user speech to Clara AGX.  
   
 # Branch  
-  
-Make sure you are working on the `main` branch, the other branch is for another project.  
+
+If you are going to use optical tracking camera (spryTrack), please switch to the branch `feature/spryTrack`.  
   
 ## Usage  
   
