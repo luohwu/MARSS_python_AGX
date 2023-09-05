@@ -1,17 +1,21 @@
 #!/usr/bin/env python
-
-import argparse
-import ctypes
-import os.path
 import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__)))
+
+import ctypes
 import  cv2
 import numpy as np
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
 if sys.platform.startswith("linux"):
-    libcast_handle = ctypes.CDLL("./libcast.so", ctypes.RTLD_GLOBAL)._handle  # load the libcast.so shared library
+    libcast_handle = ctypes.CDLL(os.path.join(dir_path, "libcast.so"),
+                                 ctypes.RTLD_GLOBAL)._handle  # load the libcast.so shared library
     pyclariuscast = ctypes.cdll.LoadLibrary("./pyclariuscast.so")  # load the pyclariuscast.so shared library
 else:
-    libcast = ctypes.CDLL('./cast.dll', ctypes.RTLD_GLOBAL)  # load the libcast.so shared library
-    pyclariuscast = ctypes.cdll.LoadLibrary('./pyclariuscast.pyd')  # load the pyclariuscast.so shared library
+    libcast = ctypes.CDLL(os.path.join(dir_path, "cast.dll"), ctypes.RTLD_GLOBAL)  # load the libcast.so shared library
+    pyclariuscast = ctypes.cdll.LoadLibrary(
+        os.path.join(dir_path, "pyclariuscast.pyd"))  # load the pyclariuscast.so shared library
 
 import pyclariuscast
 from PIL import Image
@@ -109,39 +113,24 @@ def buttonsFn(button, clicks):
 
 
 ## main function
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--address", "-a", dest="ip", help="ip address of probe.")
-    parser.add_argument("--port", "-p", dest="port", type=int, help="port of the probe")
-    parser.add_argument("--width", "-w", dest="width", type=int, help="image output width in pixels")
-    parser.add_argument("--height", "-ht", dest="height", type=int, help="image output height in pixels")
-    parser.set_defaults(ip=None)
-    parser.set_defaults(port=None)
-    parser.set_defaults(width=640)
-    parser.set_defaults(height=480)
-    args = parser.parse_args()
+def startStreaming():
 
-    # uncomment to get documentation for pyclariuscast module
-    # print(help(pyclariuscast))
-
-    args.ip="192.168.1.1"
-    args.port=5828
-    if not args.ip or not args.port or args.port < 0:
-        print("one or more arguments are invalid")
-        parser.print_usage()
-        return
 
     # get home path
     path = os.path.expanduser("~/")
+    ip_probe="192.168.1.1"
+    port_probe=5828
+    image_width=640
+    image_height=480
 
     # initialize
     cast = pyclariuscast.Caster(newProcessedImage, newRawImage, newSpectrumImage, freezeFn, buttonsFn)
-    ret = cast.init(path, args.width, args.height)
+    ret = cast.init(path, image_width, image_height)
     if ret:
         print("initialization succeeded")
-        ret = cast.connect(args.ip, args.port, "research")
+        ret = cast.connect(ip_probe, port_probe, "research")
         if ret:
-            print("connected to {0} on port {1}".format(args.ip, args.port))
+            print("connected to {0} on port {1}".format(ip_probe, port_probe))
         else:
             print("connection failed")
             if sys.platform.startswith("linux"):
@@ -196,4 +185,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    startStreaming()
