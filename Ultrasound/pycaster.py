@@ -18,12 +18,21 @@ pyclariuscast = ctypes.cdll.LoadLibrary(
 
 import pyclariuscast
 from PIL import Image
-import pyclariuscast
-from PIL import Image
-
+import sensor_msgs
+import rclpy
+from Tools.cv2ROS import cv2_to_imgmsg
 printStream = True
 
+from rclpy.node import Node
+class ClariusRosNode(Node):
+    def __init__(self):
 
+        super().__init__('ClariusRosNode')
+
+        self.US_publisher = self.create_publisher(sensor_msgs.msg.Image, 'US_images', 0)
+
+
+clariusNode=None
 ## called when a new processed image is streamed
 # @param image the scan-converted image data
 # @param width width of the image in pixels
@@ -46,6 +55,13 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
         img = Image.frombytes("RGBA", (width, height), image)
     else:
         img = Image.frombytes("L", (width, height), image)
+    img=img.convert('L')
+    # global image_in_opencv
+    image_in_opencv=cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    global clariusNode
+    clariusNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
+    # cv2.imshow('image',image_in_opencv)
+    # cv2.waitKey(1)
     print("new Image")
     # img.save("processed_image.png")
     return
@@ -117,7 +133,9 @@ def startClariusStreaming():
     # uncomment to get documentation for pyclariuscast module
     # print(help(pyclariuscast))
 
-
+    rclpy.init()
+    global clariusNode
+    clariusNode=ClariusRosNode()
     # get home path
     path = os.path.expanduser("~/")
 
