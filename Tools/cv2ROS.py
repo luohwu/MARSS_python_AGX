@@ -1,7 +1,6 @@
 import sys
 import numpy as np
 from sensor_msgs.msg import Image
-from sensor_msgs.msg import CompressedImage
 
 def imgmsg_to_cv2(img_msg):
     if img_msg.encoding != "bgr8":

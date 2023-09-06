@@ -1,5 +1,6 @@
 import atracsys.stk as tracking_sdk
 import  os
+import copy
 from std_msgs.msg import Float32MultiArray
 class SpryTrack:
     def __init__(self,geometry_lists):
@@ -60,7 +61,7 @@ class SpryTrack:
     # def get_last_frame(self):
     #     self.tracker.get_last_frame(self.lastFrame)
 
-    def publish_last_frame(self,publishers):
+    def publish_last_frame(self, rosNode):
         self.tracker.get_last_frame(self.lastFrame)
         # self.get_last_frame()
         self.message=str(len(self.lastFrame.markers))+"\n"
@@ -73,20 +74,20 @@ class SpryTrack:
                 0,0,0,1
             ]
             msg=Float32MultiArray(data=data)
-            device=self.id_to_names[marker.geometry_id]
-            self.detected.append(device)
-            if device=='HoloLens':
-                publishers.HoloLens.publish(msg)
-            elif device=='Femur':
-                publishers.Femur.publish(msg)
-            elif device== 'Saw':
-                publishers.Saw.publish(msg)
-            elif device=='Pelvis':
-                publishers.Pelvis.publish(msg)
-            elif device=='Arthrex':
-                publishers.Arthrex.publish(msg)
-            elif device=='Clarius':
-                publishers.Clarius.publish(msg)
+            tracked_object=self.id_to_names[marker.geometry_id]
+            self.detected.append(tracked_object)
+            if tracked_object== 'HoloLens':
+                rosNode.HoloLens.publish(msg)
+            elif tracked_object== 'Femur':
+                rosNode.Femur.publish(msg)
+            elif tracked_object== 'Saw':
+                rosNode.Saw.publish(msg)
+            elif tracked_object== 'Pelvis':
+                rosNode.Pelvis.publish(msg)
+            elif tracked_object== 'Arthrex':
+                rosNode.Arthrex.publish(msg)
+            elif tracked_object== 'Clarius':
+                rosNode.Clarius.publish(msg)
 
 if __name__=='__main__':
     geometry_lists=['D:\spryTrack SDK x64\data\geometry580.ini',

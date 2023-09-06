@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import sys
 import os
+
+import sensor_msgs.msg
+import std_msgs.msg
+
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 
 import ctypes
@@ -8,20 +12,28 @@ import  cv2
 import numpy as np
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-if sys.platform.startswith("linux"):
-    libcast_handle = ctypes.CDLL(os.path.join(dir_path, "libcast.so"),
-                                 ctypes.RTLD_GLOBAL)._handle  # load the libcast.so shared library
-    pyclariuscast = ctypes.cdll.LoadLibrary("./pyclariuscast.so")  # load the pyclariuscast.so shared library
-else:
-    libcast = ctypes.CDLL(os.path.join(dir_path, "cast.dll"), ctypes.RTLD_GLOBAL)  # load the libcast.so shared library
-    pyclariuscast = ctypes.cdll.LoadLibrary(
-        os.path.join(dir_path, "pyclariuscast.pyd"))  # load the pyclariuscast.so shared library
+libcast = ctypes.CDLL(os.path.join(dir_path, "cast.dll"), ctypes.RTLD_GLOBAL)  # load the libcast.so shared library
+pyclariuscast = ctypes.cdll.LoadLibrary(
+    os.path.join(dir_path, "pyclariuscast.pyd"))  # load the pyclariuscast.so shared library
 
 import pyclariuscast
 from PIL import Image
-
+from Tools.cv2ROS import cv2_to_imgmsg
 printStream = True
 
+from rclpy.node import Node
+from std_msgs.msg import Float32MultiArray
+from sensor_msgs.msg import Image
+import rclpy
+class ClariusRosNode(Node):
+    def __init__(self):
+
+        super().__init__('ClariusRosNode')
+        self.US_publisher = self.create_publisher(Image, 'US_images', 0)
+
+
+# rclpy.init()
+# clariusRosNode=ClariusRosNode()
 
 ## called when a new processed image is streamed
 # @param image the scan-converted image data
@@ -47,8 +59,12 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
         img = Image.frombytes("L", (width, height), image)
     img = img.convert('L')
     image_in_opencv=cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    cv2.imshow('image',image_in_opencv)
-    cv2.waitKey(1)
+    print("new image")
+    clariusRosNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
+    # globals.centralPublishers.US_publisher.publish(sensor_msgs.msg.Image())
+    # globals.centralPublishers.text_publisher.publish(std_msgs.msg.String())
+    # cv2.imshow('image',image_in_opencv)
+    # cv2.waitKey(1)
     # img.save("processed_image.png")
     return
 
