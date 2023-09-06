@@ -18,22 +18,11 @@ pyclariuscast = ctypes.cdll.LoadLibrary(
 
 import pyclariuscast
 from PIL import Image
-from Tools.cv2ROS import cv2_to_imgmsg
+import pyclariuscast
+from PIL import Image
+
 printStream = True
 
-from rclpy.node import Node
-from std_msgs.msg import Float32MultiArray
-from sensor_msgs.msg import Image
-import rclpy
-class ClariusRosNode(Node):
-    def __init__(self):
-
-        super().__init__('ClariusRosNode')
-        self.US_publisher = self.create_publisher(Image, 'US_images', 0)
-
-
-# rclpy.init()
-# clariusRosNode=ClariusRosNode()
 
 ## called when a new processed image is streamed
 # @param image the scan-converted image data
@@ -57,14 +46,7 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
         img = Image.frombytes("RGBA", (width, height), image)
     else:
         img = Image.frombytes("L", (width, height), image)
-    img = img.convert('L')
-    image_in_opencv=cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    print("new image")
-    clariusRosNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
-    # globals.centralPublishers.US_publisher.publish(sensor_msgs.msg.Image())
-    # globals.centralPublishers.text_publisher.publish(std_msgs.msg.String())
-    # cv2.imshow('image',image_in_opencv)
-    # cv2.waitKey(1)
+    print("new Image")
     # img.save("processed_image.png")
     return
 
@@ -129,24 +111,24 @@ def buttonsFn(button, clicks):
 
 
 ## main function
-def startStreaming():
+def startClariusStreaming():
+
+
+    # uncomment to get documentation for pyclariuscast module
+    # print(help(pyclariuscast))
 
 
     # get home path
     path = os.path.expanduser("~/")
-    ip_probe="192.168.1.1"
-    port_probe=5828
-    image_width=640
-    image_height=480
 
     # initialize
     cast = pyclariuscast.Caster(newProcessedImage, newRawImage, newSpectrumImage, freezeFn, buttonsFn)
-    ret = cast.init(path, image_width, image_height)
+    ret = cast.init(path, 640, 480)
     if ret:
         print("initialization succeeded")
-        ret = cast.connect(ip_probe, port_probe, "research")
+        ret = cast.connect("192.168.1.1", 5828, "research")
         if ret:
-            print("connected to {0} on port {1}".format(ip_probe, port_probe))
+            print("connected to {0} on port {1}".format("192.168.1.1", 5828))
         else:
             print("connection failed")
             if sys.platform.startswith("linux"):
@@ -201,4 +183,4 @@ def startStreaming():
 
 
 if __name__ == "__main__":
-    startStreaming()
+    startClariusStreaming()

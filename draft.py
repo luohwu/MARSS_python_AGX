@@ -94,7 +94,7 @@ if __name__=='__main__':
     spryTrack_process=Process(target=startTracking,args=())
     spryTrack_process.start()
 
-    # clarius_thread=Process(target=pycaster.startStreaming(),args=())
-    # clarius_thread.start()
+    clarius_thread=Process(target=pycaster.startClariusStreaming(),args=())
+    clarius_thread.start()
 
 
