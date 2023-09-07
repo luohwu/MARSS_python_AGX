@@ -18,7 +18,7 @@ def cv2_to_imgmsg(cv_image):
     img_msg = Image()
     img_msg.height = cv_image.shape[0]
     img_msg.width = cv_image.shape[1]
-    img_msg.encoding = "bgr8"
+    img_msg.encoding = "mono8"
     img_msg.is_bigendian = 0
     img_msg.data = cv_image.tostring()
     img_msg.step = len(img_msg.data) // img_msg.height # That double line is actually integer division, not a comment

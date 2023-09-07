@@ -58,11 +58,12 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
     img=img.convert('L')
     # global image_in_opencv
     image_in_opencv=cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    image_in_opencv=cv2.cvtColor(image_in_opencv, cv2.COLOR_BGR2GRAY)
     global clariusNode
     clariusNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
     # cv2.imshow('image',image_in_opencv)
     # cv2.waitKey(1)
-    print(f"new Image of {width} x {height}")
+    print(f"new Image of {image_in_opencv.shape}")
     # img.save("processed_image.png")
     return
 
@@ -127,7 +128,7 @@ def buttonsFn(button, clicks):
 
 
 ## main function
-def startClariusStreaming():
+def startClariusStreaming(ip,port,image_width,image_height):
 
 
     # uncomment to get documentation for pyclariuscast module
@@ -139,12 +140,10 @@ def startClariusStreaming():
     # get home path
     path = os.path.expanduser("~/")
 
-    ip="10.5.3.39"
-    port=5828
+
 
     # Because we transfer US images by TCP, due to TCP's performance, lower resolution should increase frame rate on HL2
-    image_width=640//4
-    image_height=480//4
+
     # initialize
     cast = pyclariuscast.Caster(newProcessedImage, newRawImage, newSpectrumImage, freezeFn, buttonsFn)
     ret = cast.init(path, image_width, image_height)
