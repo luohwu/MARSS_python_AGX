@@ -13,14 +13,7 @@ from std_msgs.msg import Float32MultiArray
 
 
 
-def startROSNode(centralPublishers):
 
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # maybe a wait function here
-    # rclpy.spin(centralPublishers)
-
-    centralPublishers.destroy_node()
-    rclpy.shutdown()
 
 def startTracking():
     rclpy.init()
@@ -43,15 +36,7 @@ def startTracking():
             print(spryTrack.detected)
             print('-'*50)
 
-def start_TCP_endpoint(IP,port):
-    tcp_server = TcpServer("UnityEndpoint",tcp_ip=IP,tcp_port=port)
 
-    tcp_server.start()
-
-    tcp_server.setup_executor()
-
-    tcp_server.destroy_nodes()
-    rclpy.shutdown()
 
 class SpryTrackRosNode(Node):
     def __init__(self):
@@ -76,14 +61,7 @@ def start_TCP_endpoint(IP,port):
     tcp_server.destroy_nodes()
     rclpy.shutdown()
 
-def startROSNode():
 
-    rclpy.init()
-    spryTrackRosNode = SpryTrackRosNode()
-    rclpy.spin(spryTrackRosNode)
-
-    spryTrackRosNode.destroy_node()
-    rclpy.shutdown()
 
 if __name__=='__main__':
 

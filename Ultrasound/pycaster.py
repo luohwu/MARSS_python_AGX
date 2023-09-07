@@ -62,7 +62,7 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
     clariusNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
     # cv2.imshow('image',image_in_opencv)
     # cv2.waitKey(1)
-    print("new Image")
+    print(f"new Image of {width} x {height}")
     # img.save("processed_image.png")
     return
 
@@ -139,14 +139,20 @@ def startClariusStreaming():
     # get home path
     path = os.path.expanduser("~/")
 
+    ip="10.5.3.39"
+    port=5828
+
+    # Because we transfer US images by TCP, due to TCP's performance, lower resolution should increase frame rate on HL2
+    image_width=640//4
+    image_height=480//4
     # initialize
     cast = pyclariuscast.Caster(newProcessedImage, newRawImage, newSpectrumImage, freezeFn, buttonsFn)
-    ret = cast.init(path, 640, 480)
+    ret = cast.init(path, image_width, image_height)
     if ret:
         print("initialization succeeded")
-        ret = cast.connect("192.168.1.1", 5828, "research")
+        ret = cast.connect(ip, port, "research")
         if ret:
-            print("connected to {0} on port {1}".format("192.168.1.1", 5828))
+            print("connected to {0} on port {1}".format(ip, port))
         else:
             print("connection failed")
             if sys.platform.startswith("linux"):
