@@ -75,7 +75,7 @@ if __name__=='__main__':
     # clarius_thread.start()
 
     # ip of the probe, and the exposed port to get US images
-    ip="10.5.3.33"
+    ip="10.5.1.93"
     port=5828
     image_width=640//4
     image_height=480//4

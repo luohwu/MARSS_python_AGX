@@ -61,8 +61,8 @@ def newProcessedImage(image, width, height, sz, micronsPerPixel, timestamp, angl
     image_in_opencv=cv2.cvtColor(image_in_opencv, cv2.COLOR_BGR2GRAY)
     global clariusNode
     clariusNode.US_publisher.publish(cv2_to_imgmsg(image_in_opencv))
-    # cv2.imshow('image',image_in_opencv)
-    # cv2.waitKey(1)
+    cv2.imshow('image',image_in_opencv)
+    cv2.waitKey(1)
     print(f"new Image of {image_in_opencv.shape}")
     # img.save("processed_image.png")
     return
@@ -206,4 +206,8 @@ def startClariusStreaming(ip,port,image_width,image_height):
 
 
 if __name__ == "__main__":
-    startClariusStreaming()
+    ip="10.5.1.93"
+    port=5828
+    width=640
+    height=480
+    startClariusStreaming(ip,port,width,height)
